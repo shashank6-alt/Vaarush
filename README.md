@@ -1,6 +1,6 @@
-# Vaarush 2.0 – Digital Inheritance on Algorand
+# Vaarush – Digital Inheritance on Algorand
 
-Vaarush 2.0 is an open-source digital inheritance platform built with Algorand smart contracts and Python (PyTeal). It enables secure, automated inheritance plan creation, milestone-based verification, and timed asset transfers on the Algorand blockchain. This project is part of AlgoBharat Hack Series #2, demonstrating real-world use of Algorand's box storage, inner transactions, and wallet integrations.
+Vaarush  is an open-source digital inheritance platform built with Algorand smart contracts and Python (PyTeal). It enables secure, automated inheritance plan creation, milestone-based verification, and timed asset transfers on the Algorand blockchain. This project is part of AlgoBharat Hack Series #2, demonstrating real-world use of Algorand's box storage, inner transactions, and wallet integrations.
 
 ## Features
 - Algorand ARC4 Python smart contracts
