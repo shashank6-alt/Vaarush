@@ -21,3 +21,9 @@ def create_plan(req: PlanRequest):
     except subprocess.CalledProcessError as e:
         raise HTTPException(status_code=500, detail=e.output.decode())
 
+
+app = FastAPI()
+
+@app.get("/health")
+def health_check():
+    return {"status": "ok"}
