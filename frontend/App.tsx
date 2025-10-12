@@ -1,6 +1,6 @@
 import React, { useState }  from "react";
 import axios from "axios" ;
-import { getAiResponse } from "./ai/assistant"; // adjust path as needed
+
 
 function App() {
   const [creatorPk, setCreatorPk] = useState("");
@@ -8,12 +8,11 @@ function App() {
   const [assetId, setAssetId] = useState("");
   const [releaseTime, setReleaseTime] = useState("");
   const [message, setMessage] = useState("");
-  const resp = await axios.post<{ reply: string }>("/api/ai", { ... });
-const data = resp.data; // now data.reply is recognized
+// Removed invalid example code; API calls should be inside async functions like handleSubmit or handleAI.
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const resp = await axios.post("/plans", {
+    const resp = await axios.post<{ detail: string }>("/plans", {
       creator_pk: creatorPk,
       heir_addr: heirAddr,
       asset_id: parseInt(assetId),
@@ -24,9 +23,11 @@ const data = resp.data; // now data.reply is recognized
     setMessage(resp.data.detail);
   };
 
-  const handleAI = () => {
-    const aiResp = getAiResponse(message || "");
-    setMessage(aiResp);
+  const handleAI = async () => {
+    const resp = await axios.get<{ answer: string }>("/api/ask", {
+      params: { question: "What is inheritance in blockchain?" }
+    });
+    setMessage(resp.data.answer); 
   };
 
   return (
