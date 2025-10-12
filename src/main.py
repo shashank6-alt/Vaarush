@@ -1,9 +1,12 @@
 # src/api/main.py
+app = FastAPI()
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import subprocess
+from src.api.routes.ai import router as ai_router
+app.include_router(ai_router, prefix="/api")
 
-app = FastAPI()
+
 
 class PlanRequest(BaseModel):
     creator_pk: str
