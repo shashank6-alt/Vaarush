@@ -1,0 +1,28 @@
+# Smart contracts
+pyteal
+py-algorand-sdk
+algorand-python          # If using algopy/ARC4 contracts
+algopy
+
+# Web backend (FastAPI preferred for API)
+fastapi
+uvicorn
+
+# Data models and validation
+pydantic
+
+# AI assistant integration
+openai
+
+# ENV management (for secret keys)
+python-dotenv
+
+# HTTP requests (for any external integrations)
+requests
+
+# Testing
+pytest
+unittest2
+
+# General utilities (optional, but common)
+typing-extensions
