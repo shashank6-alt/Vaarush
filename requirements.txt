@@ -26,3 +26,7 @@ unittest2
 
 # General utilities (optional, but common)
 typing-extensions
+
+ipython
+black
+isort
