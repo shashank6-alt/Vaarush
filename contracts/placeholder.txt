@@ -1,0 +1,28 @@
+Vaarush Contracts Placeholder
+
+This placeholder file explains current features of the inheritance contract MVP and major functionality planned for future updates.
+
+=================
+MVP FUNCTIONALITY
+=================
+- Single owner can create an inheritance contract.
+- Single heir (accounts[1]) is registered at creation.
+- Asset ID and release time are recorded.
+- After the release time passes, only the registered heir can trigger asset withdrawal.
+- Asset transfer uses an inner transaction.
+- Double-claim is prevented; contract marks assets claimed after first successful claim.
+
+=======================
+PLANNED FUTURE UPGRADES
+=======================
+- Multiple heirs and distributed shares (variable splits of inheritance).
+- Support for transferring multiple asset types and varying amounts.
+- Off-chain metadata integration (IPFS or Arweave for will text and files).
+- Advanced role-based permissions (executor, revoker, auditor roles).
+- Allow contract update of release time, heirs, or executor before release.
+- Bulk claim/batch transactions for inheriting numerous assets at once.
+- Full event logging and notification hooks for external services (email/SMS/webhook).
+- Typed client libraries (ARC-32 JSON → Python/JS) for easy integration in web/app projects.
+- End-to-end backend API (register heirs, update metadata, monitor contract).
+- Unit/integration/fuzz tests for all scenarios. Security battery for auditing.
+- On-chain upgrade patterns: DAOs, proxy contracts, and governance features.
