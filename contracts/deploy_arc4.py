@@ -16,9 +16,4 @@ def deploy_arc4(executor_address: str):
     )
     print(f"App ID: {tx.created_app}")
 
-if __name__ == "__main__":
-    import sys
-    if len(sys.argv) != 2:
-        print("Usage: python deploy_arc4.py <executor_address>")
-        sys.exit(1)
-    deploy_arc4(sys.argv[1])
+
