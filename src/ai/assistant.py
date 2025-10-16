@@ -1,7 +1,13 @@
 # src/ai/assistant.py
+from dotenv import load_dotenv
+load_dotenv()
+assert os.environ.get("OPENAI_API_KEY"), "API key is missing!"
+
+import openai
+openai.api_key = os.environ["OPENAI_API_KEY"]
 
 import os
-import openai
+
 
 # Load your OpenAI API key (recommended set in .env, not hardcoded!)
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "<YOUR_API_KEY_HERE>")
