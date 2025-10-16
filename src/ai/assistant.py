@@ -1,11 +1,27 @@
-# Simple AI assistant stub
+# src/ai/assistant.py
+
+import os
+import openai
+
+# Load your OpenAI API key (recommended set in .env, not hardcoded!)
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "<YOUR_API_KEY_HERE>")
+openai.api_key = OPENAI_API_KEY
+
 def get_ai_response(user_message: str) -> str:
-    intent_map = {
-        "create plan": "Sure! To create a plan, please provide heir address, asset ID, and release timestamp.",
-        "add heir": "You can add an heir by invoking the create_plan API with the heir's address.",
-        "status": "To check status, call GET /plans/{app_id}."
-    }
-    for key, resp in intent_map.items():
-        if key in user_message.lower():
-            return resp
-    return "Sorry, I didn't understand. You can ask how to create a plan or check status."
+    try:
+        completion = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": (
+                    "You are Vaarush's AI support assistant. "
+                    "Help users with inheritance contracts, deploying smart contracts, registering heirs, and claiming assets on Algorand. "
+                    "Always respond clearly and helpfully in one paragraph."
+                )},
+                {"role": "user", "content": user_message}
+            ],
+            max_tokens=128,
+        )
+        return completion.choices[0].message.content.strip()
+    except Exception as e:
+        return "Sorry, there was an error processing your request."
+
