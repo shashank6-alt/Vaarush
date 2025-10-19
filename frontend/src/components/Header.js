@@ -49,4 +49,24 @@ export default function Header() {
     </header>
   );
 }
+export default function Header() {
+  const { connectWallet, account } = useAuth();
+  const location = useLocation();
+  return (
+    <header className="header">
+      <div className="header__left"> ... </div>
+      <div className="header__right">
+        {account ? (
+          <span className="wallet-status">
+            {account.slice(0,6)}…{account.slice(-4)}
+          </span>
+        ) : (
+          <button className="btn-connect" onClick={connectWallet}>
+            Connect Wallet
+          </button>
+        )}
+      </div>
+    </header>
+  );
+}
 
