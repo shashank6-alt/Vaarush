@@ -11,3 +11,12 @@
   box-shadow: 0 2px 4px rgba(0,0,0,0.5);
   z-index: 100;
 }
+.logo {
+  font-family: 'Inter', sans-serif;
+  font-size: 24px;
+  color: #EEEEEE;
+  font-weight: bold;
+}
+.logo--accent {
+  color: #39FF14;
+}
