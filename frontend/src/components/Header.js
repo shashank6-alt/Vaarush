@@ -18,3 +18,35 @@ export default function Header() {
     </header>
   );
 }
+// Header.js (after commit 3)
+const navItems = [
+  { name: 'Home', to: '/' },
+  { name: 'Create Will', to: '/create' },
+  { name: 'Dashboard', to: '/dashboard' },
+];
+export default function Header() {
+  const location = useLocation();
+  return (
+    <header className="header">
+      <div className="header__left">
+        <span className="logo"><span className="logo--accent">V</span>aarush</span>
+        <nav className="nav">
+          {navItems.map(({ name, to }) => (
+            <Link
+              key={to}
+              to={to}
+              className={
+                location.pathname === to
+                  ? 'nav__link nav__link--active'
+                  : 'nav__link'
+              }
+            >
+              {name}
+            </Link>
+          ))}
+        </nav>
+      </div>
+    </header>
+  );
+}
+
