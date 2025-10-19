@@ -52,3 +52,14 @@
   background: #39FF14;
   color: #121212;
 }
+.wallet-status {
+  color: #39FF14;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  padding: 7px 16px;
+  border-radius: 20px;
+  border: 1px solid #39FF14;
+  background: #212121;
+  margin-left: 8px;
+}
+
