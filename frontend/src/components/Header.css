@@ -20,3 +20,19 @@
 .logo--accent {
   color: #39FF14;
 }
+.nav__link--active::after,
+.nav__link:hover::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #39FF14;
+  border-radius: 2px;
+  box-shadow: 0 0 8px #39FF1470;
+}
+.nav__link--active,
+.nav__link:hover {
+  color: #39FF14;
+}
