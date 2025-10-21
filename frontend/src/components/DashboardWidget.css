@@ -1,0 +1,60 @@
+/* src/components/DashboardWidget.css */
+
+.dashboard-widget {
+  background: #1e1e1e;
+  border: 1px solid #232323;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #eee;
+  font-family: 'Inter', sans-serif;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.dashboard-widget:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,255,20,0.2);
+}
+
+.widget-icon {
+  font-size: 24px;
+  color: #39FF14;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.widget-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.widget-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #39FF14;
+}
+
+.widget-title {
+  font-size: 14px;
+  color: #aaa;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .dashboard-widget {
+    flex-direction: column;
+    text-align: center;
+  }
+  .widget-icon {
+    font-size: 28px;
+  }
+  .widget-value {
+    font-size: 18px;
+  }
+  .widget-title {
+    font-size: 12px;
+  }
+}
