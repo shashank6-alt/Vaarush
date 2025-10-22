@@ -1,17 +1,20 @@
-from algopy import ARC4Contract, arc4, subroutine, Uint64, Bytes, Txn, Account, GlobalState, LocalState
-from algopy import ABIString, ABIUint64, ABIBytes , arc4
+from pyteal import (
+    Contract as ARC4Contract, Expr as arc4, Subroutine as subroutine, Int as Uint64, Bytes, Txn, 
+    Account, Global as GlobalState, App as LocalState, abi as ABIString, abi as ABIUint64, abi as ABIBytes
+)
 
 
 class WillManagerContract(ARC4Contract):
     
     def __init__(self) -> None:
-        # Global state: executor address
-        self.executor = GlobalState(Bytes)
+        # Global state
+        self.executor = GlobalState(Bytes)       # executor address
+        self.total_share = GlobalState(Uint64)   # track total allocated share
         
         # Local state per account (heir)
-        self.heir_share = LocalState(Uint64)    # percentage share (0-100)
-        self.heir_data = LocalState(Bytes)      # metadata/will instructions
-        self.is_registered = LocalState(Uint64) # 1 if registered, 0 if not
+        self.heir_share = LocalState(Uint64)     # percentage share (0-100)
+        self.heir_data = LocalState(Bytes)       # metadata/will instructions
+        self.is_registered = LocalState(Uint64)  # 1 if registered, 0 if not
 
     @arc4.baremethod(create="allow")
     def create_application(self, executor_addr: Bytes) -> None:
@@ -37,9 +40,19 @@ class WillManagerContract(ARC4Contract):
         # Heir must be registered first
         assert self.is_registered[heir] == Uint64(1), "Heir not registered"
         
+        # Validate share percentage (0-100)
+        share = share_percentage.native
+        assert share >= Uint64(0) and share <= Uint64(100), "Invalid share percentage"
+        
+        # Update total share
+        old_share = self.heir_share[heir]
+        new_total = self.total_share.value - old_share + share
+        assert new_total <= Uint64(100), "Total share exceeds 100%"
+        
         # Store share and metadata
-        self.heir_share[heir] = share_percentage.native
+        self.heir_share[heir] = share
         self.heir_data[heir] = metadata.native.bytes
+        self.total_share.value = new_total
         
         return ABIString("Will updated for heir")
 
