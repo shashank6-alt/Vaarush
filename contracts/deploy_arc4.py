@@ -1,22 +1,20 @@
-# contracts/deploy_pyteal.py
+# contracts/deploy_arc4.py
 
 """
-Deployment script for PyTeal-based Will Manager Smart Contract.
-Deploys to Algorand TestNet using py-algorand-sdk.
+Deploy ARC4-based WillManager Smart Contract to Algorand TestNet
+Usage: python contracts/deploy_arc4.py <creator-mnemonic> <executor-address>
 """
 
 import sys
-import os
+import base64
 from algosdk import account, mnemonic
 from algosdk.v2client import algod
 from algosdk.transaction import ApplicationCreateTxn, OnComplete, StateSchema
-from algosdk.logic import get_application_address
-import base64
 
 
-# Algorand node configuration (TestNet)
+# Algorand TestNet configuration
 ALGOD_ADDRESS = "https://testnet-api.algonode.cloud"
-ALGOD_TOKEN = ""  # Public node requires no token
+ALGOD_TOKEN = ""
 
 
 def read_teal_file(filename):
@@ -33,11 +31,11 @@ def compile_program(client, source_code):
 
 def deploy_contract(creator_mnemonic, executor_address):
     """
-    Deploy the Will Manager contract to Algorand.
+    Deploy the Will Manager ARC4 contract.
     
     Args:
-        creator_mnemonic: 25-word mnemonic of account deploying contract
-        executor_address: Address that will manage the will
+        creator_mnemonic: 25-word mnemonic of deploying account
+        executor_address: Algorand address of executor
     
     Returns:
         app_id: Application ID of deployed contract
@@ -46,24 +44,34 @@ def deploy_contract(creator_mnemonic, executor_address):
     # Initialize Algod client
     algod_client = algod.AlgodClient(ALGOD_TOKEN, ALGOD_ADDRESS)
     
-    # Get creator account from mnemonic
+    # Get creator account
     creator_private_key = mnemonic.to_private_key(creator_mnemonic)
     creator_address = account.address_from_private_key(creator_private_key)
     
-    print(f"Deploying contract from: {creator_address}")
-    print(f"Executor address: {executor_address}")
+    print("=" * 60)
+    print("Deploying WillManager Contract to Algorand TestNet")
+    print("=" * 60)
+    print(f"Creator Address: {creator_address}")
+    print(f"Executor Address: {executor_address}")
+    print()
     
-    # Read TEAL files
-    approval_program_source = read_teal_file("contracts/approval.teal")
-    clear_program_source = read_teal_file("contracts/clear.teal")
+    # Read and compile TEAL programs
+    try:
+        approval_source = read_teal_file("contracts/approval.teal")
+        clear_source = read_teal_file("contracts/clear.teal")
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+        print("\nMake sure you've compiled your contract first:")
+        print("  python contracts/CONTRACT.py")
+        sys.exit(1)
     
-    # Compile programs
-    approval_program = compile_program(algod_client, approval_program_source)
-    clear_program = compile_program(algod_client, clear_program_source)
+    print("Compiling TEAL programs...")
+    approval_program = compile_program(algod_client, approval_source)
+    clear_program = compile_program(algod_client, clear_source)
     
     # Define state schema
-    global_schema = StateSchema(num_uints=1, num_byte_slices=1)  # total_share, executor
-    local_schema = StateSchema(num_uints=2, num_byte_slices=1)   # heir_share, is_registered, heir_data
+    global_schema = StateSchema(num_uints=1, num_byte_slices=1)
+    local_schema = StateSchema(num_uints=2, num_byte_slices=1)
     
     # Get suggested parameters
     params = algod_client.suggested_params()
@@ -85,59 +93,58 @@ def deploy_contract(creator_mnemonic, executor_address):
     
     # Send transaction
     tx_id = algod_client.send_transaction(signed_txn)
-    print(f"Transaction ID: {tx_id}")
+    print(f"Transaction sent with ID: {tx_id}")
+    print("Waiting for confirmation...")
     
     # Wait for confirmation
     try:
         confirmed_txn = algod_client.pending_transaction_info(tx_id)
-        print("Waiting for confirmation...")
         while not (confirmed_txn.get("confirmed-round")):
             confirmed_txn = algod_client.pending_transaction_info(tx_id)
         
         app_id = confirmed_txn['application-index']
-        app_address = get_application_address(app_id)
         
-        print("\n" + "="*60)
-        print("✓ Contract deployed successfully!")
-        print("="*60)
+        print()
+        print("=" * 60)
+        print("✓ CONTRACT DEPLOYED SUCCESSFULLY!")
+        print("=" * 60)
         print(f"App ID: {app_id}")
-        print(f"App Address: {app_address}")
         print(f"Transaction ID: {tx_id}")
         print(f"Confirmed in round: {confirmed_txn['confirmed-round']}")
-        print("="*60)
+        print(f"Explorer: https://testnet.algoexplorer.io/application/{app_id}")
+        print("=" * 60)
         
         return app_id
         
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"\n❌ Error during deployment: {e}")
         return None
 
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
-        print("Usage: python deploy_pyteal.py <creator_mnemonic> <executor_address>")
+        print("Usage: python contracts/deploy_arc4.py '<25-word-mnemonic>' <executor-address>")
         print("\nExample:")
-        print('  python deploy_pyteal.py "word1 word2 ... word25" EXECUTOR_ALGO_ADDRESS')
+        print('  python contracts/deploy_arc4.py "word1 word2 ... word25" ALGORAND_ADDRESS')
         sys.exit(1)
     
     creator_mnemonic = sys.argv[1]
     executor_address = sys.argv[2]
     
-    # Validate mnemonic
+    # Validate inputs
     try:
         mnemonic.to_private_key(creator_mnemonic)
     except Exception as e:
-        print(f"Error: Invalid mnemonic - {e}")
+        print(f"❌ Error: Invalid mnemonic - {e}")
         sys.exit(1)
     
-    # Validate executor address
     if len(executor_address) != 58:
-        print("Error: Invalid Algorand address (must be 58 characters)")
+        print("❌ Error: Invalid Algorand address (must be 58 characters)")
         sys.exit(1)
     
-    # Deploy contract
+    # Deploy
     app_id = deploy_contract(creator_mnemonic, executor_address)
     
     if app_id:
         print(f"\n✓ Save this App ID: {app_id}")
-        print("You'll need it to interact with your contract!")
+        print("You can now interact with your contract!")
