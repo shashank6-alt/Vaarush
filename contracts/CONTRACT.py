@@ -1,10 +1,6 @@
-from pyteal import (
-    Contract as ARC4Contract, Expr as arc4, Subroutine as subroutine, Int as Uint64, Bytes, Txn, 
-    Account, Global as GlobalState, App as LocalState, abi as ABIString, abi as ABIUint64, abi as ABIBytes
-)
+from pyteal import *
 
-
-class WillManagerContract(ARC4Contract):
+def will_manager_approval():
     
     def __init__(self) -> None:
         # Global state
