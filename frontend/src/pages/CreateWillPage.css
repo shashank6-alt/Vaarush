@@ -1,0 +1,71 @@
+/* src/pages/CreateWillPage.css */
+
+.create-will-page {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 32px;
+  min-height: 100vh;
+  padding: 80px 24px 80px 24px;
+  background: #121212;
+  color: #eee;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Sidebar */
+.create-will-sidebar {
+  padding: 24px;
+}
+
+.create-will-sidebar h2 {
+  font-size: 28px;
+  color: #39FF14;
+  margin-bottom: 24px;
+  text-shadow: 0 0 8px #39FF1450;
+}
+
+.step {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.step-number {
+  width: 40px;
+  height: 40px;
+  background: #39FF14;
+  color: #121212;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.step-content h3 {
+  font-size: 18px;
+  color: #eee;
+  margin-bottom: 4px;
+}
+
+.step-content p {
+  font-size: 14px;
+  color: #aaa;
+  line-height: 1.5;
+}
+
+/* Form Container */
+.create-will-form {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .create-will-page {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
