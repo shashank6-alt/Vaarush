@@ -2,35 +2,39 @@
 
 import React, { useState, useEffect } from 'react';
 import { FaFileAlt, FaCheckDouble, FaUsers, FaChartLine } from 'react-icons/fa';
+import { getUserStats } from '../utils/api';
+import { formatCurrency, formatNumber, formatDate } from '../utils/helpers';
 import DashboardWidget from '../components/DashboardWidget';
 import './DashboardPage.css';
 
 export default function DashboardPage() {
-  const [stats, setStats] = useState({
-    totalContracts: 0,
-    claimedContracts: 0,
-    totalHeirs: 0,
-    pendingClaims: 0,
-  });
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Demo data - replace with real API call
-    const fetchStats = async () => {
+    const loadStats = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        // const data = await getUserStats();
-        // setStats(data);
-        setStats({
-          totalContracts: 12,
-          claimedContracts: 5,
-          totalHeirs: 28,
-          pendingClaims: 7,
-        });
+        // Replace 'ALGO_ADDRESS_HERE' with actual user address from wallet
+        const userAddress = localStorage.getItem('vaarush_account') || 'ALGO_ADDRESS_HERE';
+        const data = await getUserStats(userAddress);
+        setStats(data);
       } catch (err) {
-        console.error('Failed to fetch stats:', err);
+        setError(err.message || 'Failed to load statistics');
+      } finally {
+        setLoading(false);
       }
     };
-    fetchStats();
+    loadStats();
   }, []);
+
+  if (loading) return <div className="dashboard-page"><p className="loading">Loading dashboard...</p></div>;
+
+  if (error) return <div className="dashboard-page"><p className="error">Error: {error}</p></div>;
+
+  if (!stats) return <div className="dashboard-page"><p className="no-data">No data available</p></div>;
 
   return (
     <div className="dashboard-page">
@@ -40,103 +44,102 @@ export default function DashboardPage() {
       <div className="widgets-grid">
         <DashboardWidget
           title="Total Contracts"
-          value={stats.totalContracts}
+          value={stats.totalContracts || 0}
           icon={FaFileAlt}
         />
         <DashboardWidget
           title="Claimed Contracts"
-          value={stats.claimedContracts}
+          value={stats.claimedContracts || 0}
           icon={FaCheckDouble}
         />
         <DashboardWidget
           title="Total Heirs"
-          value={stats.totalHeirs}
+          value={stats.totalHeirs || 0}
           icon={FaUsers}
         />
         <DashboardWidget
           title="Pending Claims"
-          value={stats.pendingClaims}
+          value={stats.pendingClaims || 0}
           icon={FaChartLine}
         />
       </div>
 
+      {stats.totalValue !== undefined && (
+        <div className="tvl-banner">
+          <p className="tvl-label">Total Value Locked</p>
+          <p className="tvl-value">{formatCurrency(stats.totalValue)}</p>
+        </div>
+      )}
+
       <section className="contracts-section">
         <h2>Recent Contracts</h2>
-        <div className="contracts-table">
-          <table>
-            <thead>
-              <tr>
-                <th>App ID</th>
-                <th>Owner</th>
-                <th>Release Date</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="app-id">1001</td>
-                <td className="address">AAAA...XXXX</td>
-                <td>2025-12-25</td>
-                <td>
-                  <span className="status unclaimed">Pending</span>
-                </td>
-                <td>
-                  <a href="/contract/1001" className="link">View</a>
-                </td>
-              </tr>
-              <tr>
-                <td className="app-id">1002</td>
-                <td className="address">BBBB...YYYY</td>
-                <td>2025-11-15</td>
-                <td>
-                  <span className="status claimed">Claimed</span>
-                </td>
-                <td>
-                  <a href="/contract/1002" className="link">View</a>
-                </td>
-              </tr>
-              <tr>
-                <td className="app-id">1003</td>
-                <td className="address">CCCC...ZZZZ</td>
-                <td>2026-01-10</td>
-                <td>
-                  <span className="status unclaimed">Pending</span>
-                </td>
-                <td>
-                  <a href="/contract/1003" className="link">View</a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        {stats.contracts && stats.contracts.length > 0 ? (
+          <div className="contracts-table-wrapper">
+            <table className="contracts-table">
+              <thead>
+                <tr>
+                  <th>App ID</th>
+                  <th>Owner</th>
+                  <th>Created</th>
+                  <th>Release Date</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {stats.contracts.map((contract) => (
+                  <tr key={contract.id}>
+                    <td className="app-id">{contract.appId}</td>
+                    <td className="address">
+                      {contract.owner?.slice(0, 6)}...{contract.owner?.slice(-4)}
+                    </td>
+                    <td>{formatDate(contract.createdAt)}</td>
+                    <td>{formatDate(contract.releaseTime)}</td>
+                    <td>
+                      <span
+                        className={
+                          contract.claimed
+                            ? 'status claimed'
+                            : 'status pending'
+                        }
+                      >
+                        {contract.claimed ? 'Claimed' : 'Pending'}
+                      </span>
+                    </td>
+                    <td>
+                      <a href={`/contract/${contract.appId}`} className="link">
+                        View →
+                      </a>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p className="no-contracts">No contracts yet</p>
+        )}
       </section>
 
       <section className="activity-section">
         <h2>Recent Activity</h2>
-        <div className="activity-list">
-          <div className="activity-item">
-            <div className="activity-icon success">✓</div>
-            <div className="activity-content">
-              <p className="activity-title">Contract Deployed</p>
-              <p className="activity-time">App ID 1001 • 2 hours ago</p>
-            </div>
+        {stats.activity && stats.activity.length > 0 ? (
+          <div className="activity-list">
+            {stats.activity.map((item, idx) => (
+              <div className="activity-item" key={idx}>
+                <div className={`activity-icon ${item.type}`}>
+                  {item.type === 'success' ? '✓' : 'ℹ'}
+                </div>
+                <div className="activity-content">
+                  <p className="activity-title">{item.title}</p>
+                  <p className="activity-time">{item.description}</p>
+                </div>
+              </div>
+            ))}
           </div>
-          <div className="activity-item">
-            <div className="activity-icon success">✓</div>
-            <div className="activity-content">
-              <p className="activity-title">Asset Claimed</p>
-              <p className="activity-time">App ID 1002 • 1 day ago</p>
-            </div>
-          </div>
-          <div className="activity-item">
-            <div className="activity-icon info">ℹ</div>
-            <div className="activity-content">
-              <p className="activity-title">Heir Registered</p>
-              <p className="activity-time">App ID 1003 • 3 days ago</p>
-            </div>
-          </div>
-        </div>
+        ) : (
+          <p className="no-activity">No recent activity</p>
+        )}
       </section>
     </div>
   );
