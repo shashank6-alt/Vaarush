@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import './ContractForm.css';
 import { createWill } from '../utils/api';  // real API call
+import { createWill } from '../utils/api';
 
 export default function ContractForm() {
   const [owner, setOwner] = useState('');
