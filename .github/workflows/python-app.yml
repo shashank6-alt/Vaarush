@@ -12,14 +12,62 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.x'
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
+        # install project requirements and pytest (so tests run reliably)
         pip install -r requirements.txt
-    - name: Run tests
+        pip install pytest
+
+    - name: Run tests (pytest preferred, fallback to unittest)
+      env:
+        # If you want CI to succeed even when no tests are present, set ALLOW_NO_TESTS: 'true'
+        ALLOW_NO_TESTS: 'false'
       run: |
-        python -m unittest discover
+        set -euo pipefail
+
+        echo "Looking for test files (names starting with 'test' and ending with .py)..."
+        TEST_COUNT=$(python - <<'PY'
+import os
+count = 0
+for root, _, files in os.walk('.'):
+    # skip .git and virtual env dirs
+    if any(part.startswith('.') for part in root.split(os.sep)):
+        continue
+    for f in files:
+        if f.startswith('test') and f.endswith('.py'):
+            count += 1
+print(count)
+PY
+)
+        echo "Test files found: $TEST_COUNT"
+
+        if [ "$TEST_COUNT" -eq 0 ]; then
+          echo "No test files were found."
+          if [ "${ALLOW_NO_TESTS:-false}" = "true" ]; then
+            echo "ALLOW_NO_TESTS=true — exiting successfully."
+            exit 0
+          fi
+          echo "Failing the job. Add tests under a tests/ directory or files named test_*.py."
+          exit 1
+        fi
+
+        # If pytest is installed, use it (more feature rich and better output)
+        if python -c "import pytest" >/dev/null 2>&1; then
+          echo "Running pytest..."
+          pytest -q --maxfail=1
+        else
+          echo "pytest not available; using unittest discover as fallback..."
+          # try discover in tests/ first, then root
+          if [ -d tests ]; then
+            python -m unittest discover -s tests -p "test*.py"
+          else
+            python -m unittest discover -v
+          fi
+        fi
