@@ -51,3 +51,33 @@ export default function Header() {
     </header>
   );
 }
+import useAuth from '../hooks/useAuth';
+import useAlgorand from '../hooks/useAlgorand';
+
+function MyComponent() {
+  const { account, connectWallet, isConnected } = useAuth();
+  const { getAccountInfo, loading, error } = useAlgorand();
+
+  const handleGetInfo = async () => {
+    if (account) {
+      const info = await getAccountInfo(account);
+      console.log(info);
+    }
+  };
+
+  return (
+    <div>
+      {!isConnected() ? (
+        <button onClick={connectWallet}>Connect Wallet</button>
+      ) : (
+        <>
+          <p>Connected: {account}</p>
+          <button onClick={handleGetInfo} disabled={loading}>
+            {loading ? 'Loading...' : 'Get Account Info'}
+          </button>
+          {error && <p style={{ color: 'red' }}>{error}</p>}
+        </>
+      )}
+    </div>
+  );
+}
