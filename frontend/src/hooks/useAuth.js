@@ -1,34 +1,32 @@
-// src/hooks/useAuth.js
-
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 
 export default function useAuth() {
   const [account, setAccount] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const connectWallet = useCallback(async () => {
-    setLoading(true);
-    setError(null);
+  const connectWallet = async () => {
+    setIsLoading(true);
     try {
-      if (!window.algorand) {
-        throw new Error('Algorand wallet not found. Please install it.');
+      // Check if AlgoSigner is installed
+      if (typeof window !== 'undefined' && window.AlgoSigner) {
+        await window.AlgoSigner.connect();
+        const accounts = await window.AlgoSigner.accounts({
+          ledger: 'TestNet'
+        });
+        if (accounts && accounts.length > 0) {
+          setAccount(accounts[0].address);
+        }
+      } else {
+        // Demo mode if AlgoSigner not installed
+        setAccount('RQZKSEKU2YFRVZHZYQPXOZI57LXWA67XTUUCULPAV23H4Q0Q6365CYIHII');
+        alert('AlgoSigner not detected. Using demo mode.');
       }
-      const accounts = await window.algorand.connect();
-      if (accounts && accounts.length > 0) {
-        setAccount(accounts[0]);
-        localStorage.setItem('vaarush_account', accounts[0]);
-      }
-    } catch (err) {
-      setError(err.message);
+    } catch (error) {
+      console.error('Wallet connection failed:', error);
+      alert('Failed to connect wallet');
     }
-    setLoading(false);
-  }, []);
-
-  const disconnectWallet = useCallback(() => {
-    setAccount(null);
-    localStorage.removeItem('vaarush_account');
-  }, []);
+    setIsLoading(false);
+  };
 
   const isConnected = () => {
     return account !== null;
@@ -36,10 +34,8 @@ export default function useAuth() {
 
   return {
     account,
-    loading,
-    error,
     connectWallet,
-    disconnectWallet,
     isConnected,
+    isLoading
   };
 }
