@@ -1,215 +1,182 @@
-<!-- public/index.html -->
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vaarush - Digital Inheritance Platform</title>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0a0e27" />
+    <meta
+      name="description"
+      content="Vaarush - Secure blockchain-based digital inheritance platform built on Algorand. Create, manage, and claim digital wills with trustless blockchain security."
+    />
+    <meta
+      name="keywords"
+      content="inheritance, blockchain, Algorand, digital assets, will, estate planning, cryptocurrency, smart contracts"
+    />
+    <meta name="author" content="Vaarush Team" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Vaarush - Digital Inheritance on Algorand Blockchain" />
+    <meta property="og:description" content="Create, manage, and claim digital wills with trustless blockchain security." />
+    <meta property="og:url" content="https://vaarush.com" />
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Vaarush - Digital Inheritance" />
+    <meta name="twitter:description" content="Secure your legacy on Algorand blockchain." />
+
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Global Styles -->
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0a0e27;
-            color: #ffffff;
-            line-height: 1.6;
-        }
-        
-        header {
-            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0, 255, 136, 0.1);
-            border-bottom: 2px solid #00ff88;
-        }
-        
-        nav {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            font-size: 28px;
-            font-weight: bold;
-            color: #00ff88;
-            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 30px;
-            list-style: none;
-        }
-        
-        .nav-links a {
-            color: #ffffff;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        
-        .nav-links a:hover {
-            color: #00ff88;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 60px 20px;
-        }
-        
-        .hero {
-            text-align: center;
-            margin-bottom: 80px;
-        }
-        
-        .hero h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-            color: #00ff88;
-            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
-        }
-        
-        .hero p {
-            font-size: 18px;
-            color: #cccccc;
-            margin-bottom: 30px;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 12px 30px;
-            background: #00ff88;
-            color: #0a0e27;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: all 0.3s;
-            cursor: pointer;
-            border: none;
-            font-size: 16px;
-        }
-        
-        .btn:hover {
-            background: #00dd77;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.6);
-        }
-        
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin: 60px 0;
-        }
-        
-        .feature-card {
-            background: #1a1f3a;
-            padding: 30px;
-            border-radius: 10px;
-            border: 1px solid #00ff88;
-            transition: all 0.3s;
-        }
-        
-        .feature-card:hover {
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
-            transform: translateY(-5px);
-        }
-        
-        .feature-card h3 {
-            color: #00ff88;
-            margin-bottom: 15px;
-        }
-        
-        footer {
-            background: #0a0e27;
-            border-top: 1px solid #00ff88;
-            padding: 30px;
-            text-align: center;
-            color: #888;
-            margin-top: 80px;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+          'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+          'Helvetica Neue', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background: #0a0e27;
+        color: #eee;
+      }
+
+      #root {
+        width: 100%;
+        min-height: 100%;
+      }
+
+      body {
+        overflow-x: hidden;
+      }
+
+      /* Scrollbar Styling */
+      ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #0a0e27;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #39FF14;
+        border-radius: 5px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #2eb82e;
+      }
+
+      /* Selection Styling */
+      ::selection {
+        background: #39FF14;
+        color: #0a0e27;
+      }
+
+      ::-moz-selection {
+        background: #39FF14;
+        color: #0a0e27;
+      }
+
+      /* Loading Animation */
+      .loading-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #0a0e27;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+      }
+
+      .loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 4px solid #1a1f3a;
+        border-top: 4px solid #39FF14;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      .loading-text {
+        color: #39FF14;
+        font-size: 18px;
+        font-weight: 600;
+        margin-top: 20px;
+        text-shadow: 0 0 10px #39FF1450;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      /* NoScript Message */
+      .noscript-message {
+        background: #1a1f3a;
+        color: #39FF14;
+        padding: 20px;
+        text-align: center;
+        font-size: 16px;
+        border: 2px solid #39FF14;
+        margin: 20px;
+        border-radius: 10px;
+      }
     </style>
-</head>
-<body>
-    <!-- Header/Navigation -->
-    <header>
-        <nav>
-            <div class="logo">🔐 VAARUSH</div>
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
 
-    <!-- Main Content -->
-    <div class="container">
-        <!-- Hero Section -->
-        <section class="hero" id="home">
-            <h1>Digital Inheritance Made Simple</h1>
-            <p>Secure, decentralized, and blockchain-powered digital asset management for the future</p>
-            <button class="btn">Get Started</button>
-        </section>
-
-        <!-- Features Section -->
-        <section id="features">
-            <h2 style="text-align: center; color: #00ff88; margin-bottom: 50px; font-size: 36px;">Features</h2>
-            <div class="features">
-                <div class="feature-card">
-                    <h3>🔒 Secure Storage</h3>
-                    <p>Your digital assets are encrypted and stored securely on the blockchain using Algorand smart contracts.</p>
-                </div>
-                <div class="feature-card">
-                    <h3>📋 Asset Management</h3>
-                    <p>Manage your digital will, cryptocurrencies, documents, and personal data in one place.</p>
-                </div>
-                <div class="feature-card">
-                    <h3>⚡ Automated Execution</h3>
-                    <p>Smart contracts automatically execute your will according to predefined conditions and beneficiaries.</p>
-                </div>
-                <div class="feature-card">
-                    <h3>🌍 Decentralized</h3>
-                    <p>Built on blockchain technology - no single point of failure, fully transparent and verifiable.</p>
-                </div>
-                <div class="feature-card">
-                    <h3>👥 Beneficiary Management</h3>
-                    <p>Easily designate beneficiaries and set conditions for asset distribution.</p>
-                </div>
-                <div class="feature-card">
-                    <h3>📊 Dashboard</h3>
-                    <p>Monitor your assets, view analytics, and manage everything from an intuitive dashboard.</p>
-                </div>
-            </div>
-        </section>
+    <title>Vaarush - Digital Inheritance on Algorand</title>
+  </head>
+  <body>
+    <noscript>
+      <div class="noscript-message">
+        <h2>⚠️ JavaScript Required</h2>
+        <p>You need to enable JavaScript to run Vaarush application.</p>
+        <p>Please enable JavaScript in your browser settings and refresh the page.</p>
+      </div>
+    </noscript>
+    
+    <!-- Loading Screen (shown until React loads) -->
+    <div id="loading-screen" class="loading-screen">
+      <div class="loading-spinner"></div>
+      <div class="loading-text">🔐 Loading Vaarush...</div>
     </div>
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2025 Vaarush. All rights reserved. Built on Algorand Blockchain.</p>
-    </footer>
+    <!-- React Root -->
+    <div id="root"></div>
 
+    <!-- Remove loading screen once React loads -->
     <script>
-        // Simple smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        });
-
-        // Log that page is loaded
-        console.log('✓ Vaarush Frontend Loaded Successfully!');
+      window.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+          var loadingScreen = document.getElementById('loading-screen');
+          if (loadingScreen) {
+            loadingScreen.style.display = 'none';
+          }
+        }, 500);
+      });
     </script>
-</body>
+  </body>
 </html>
