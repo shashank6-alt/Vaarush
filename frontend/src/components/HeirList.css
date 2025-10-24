@@ -61,3 +61,51 @@
   font-size: 14px;
   font-style: italic;
 }
+.btn-claim {
+  background: #39FF14;
+  color: #0a0e27;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 12px;
+  transition: all 0.2s;
+}
+
+.btn-claim:hover:not(:disabled) {
+  background: #2eb82e;
+  box-shadow: 0 0 15px rgba(57, 255, 20, 0.5);
+  transform: scale(1.05);
+}
+
+.btn-claim:disabled {
+  background: #888;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.claim-message {
+  margin-top: 20px;
+  padding: 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.claim-message.success {
+  background: #163a16;
+  color: #39FF14;
+  border: 2px solid #39FF14;
+}
+
+.claim-message.error {
+  background: #3a1616;
+  color: #ff4c4c;
+  border: 2px solid #ff4c4c;
+}
+.claim-message.info {
+  background: #1e1e1e;
+  color: #aaa;
+  border: 2px solid #555;
+}
