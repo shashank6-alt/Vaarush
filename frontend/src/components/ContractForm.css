@@ -1,129 +1,454 @@
-/* src/components/ContractForm.css */
+/* ========================================
+   VAARUSH CONTRACT FORM STYLES - MASTER VERSION
+   ======================================== */
 
 .contract-form {
-  background: rgba(18,18,18,0.8);
-  border: 1px solid #232323;
-  padding: 24px;
-  border-radius: 8px;
-  max-width: 480px;
+  background: linear-gradient(135deg, #1a1f3a 0%, #0a0e27 100%);
+  padding: 40px;
+  border-radius: 15px;
+  border: 2px solid #39FF14;
+  max-width: 700px;
   margin: 0 auto;
   color: #eee;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  box-shadow: 0 0 30px rgba(57, 255, 20, 0.2);
 }
 
 .contract-form h2 {
-  margin-bottom: 16px;
   color: #39FF14;
-  text-shadow: 0 0 8px #39FF1470;
+  font-size: 32px;
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: 800;
+  text-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
+  letter-spacing: 1px;
 }
 
-.contract-form label {
+/* ========================================
+   FORM GROUPS & INPUTS
+   ======================================== */
+
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-group label {
   display: block;
-  margin-bottom: 12px;
-  font-size: 14px;
+  color: #39FF14;
+  font-weight: 700;
+  margin-bottom: 10px;
+  font-size: 15px;
+  letter-spacing: 0.5px;
 }
 
-.contract-form input[type="text"],
-.contract-form input[type="number"],
-.contract-form input[type="datetime-local"] {
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="datetime-local"] {
   width: 100%;
-  padding: 8px 12px;
-  margin-top: 4px;
-  background: #1e1e1e;
-  border: 1px solid #333;
-  border-radius: 4px;
+  padding: 12px 15px;
+  background: #0a0e27;
+  border: 1px solid #39FF14;
+  border-radius: 8px;
   color: #eee;
   font-size: 14px;
-  transition: border-color 0.2s;
+  transition: all 0.3s ease;
+  font-family: 'Inter', monospace;
 }
 
-.contract-form input:focus {
-  border-color: #39FF14;
-  box-shadow: 0 0 6px #39FF1470;
+.form-group input:focus {
   outline: none;
+  border-color: #39FF14;
+  box-shadow: 0 0 15px rgba(57, 255, 20, 0.5);
+  background: #1a1f3a;
+  transform: translateY(-1px);
 }
+
+.form-group input::placeholder {
+  color: #666;
+  font-size: 13px;
+}
+
+.form-group small {
+  display: block;
+  color: #999;
+  font-size: 12px;
+  margin-top: 6px;
+  font-style: italic;
+}
+
+/* ========================================
+   HEIRS SECTION
+   ======================================== */
 
 .heirs-section {
-  margin: 16px 0;
+  background: rgba(10, 14, 39, 0.6);
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  border: 1px solid #39FF14;
+  backdrop-filter: blur(10px);
 }
 
 .heirs-section h3 {
-  margin-bottom: 8px;
-  font-size: 16px;
   color: #39FF14;
+  font-size: 20px;
+  margin-bottom: 18px;
+  margin-top: 0;
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
 .heir-row {
   display: flex;
-  gap: 8px;
-  margin-bottom: 8px;
+  gap: 12px;
+  margin-bottom: 15px;
+  align-items: center;
+  background: #1a1f3a;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #232323;
+  transition: all 0.2s;
 }
 
-.heir-row input {
-  flex: 1;
+.heir-row:focus-within {
+  border-color: #39FF14;
+  box-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
 }
+
+.heir-input {
+  flex: 2.5;
+}
+
+.heir-input input {
+  width: 100%;
+  padding: 10px 12px;
+  background: #0a0e27;
+  border: 1px solid #39FF14;
+  border-radius: 6px;
+  color: #eee;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+
+.heir-input input:focus {
+  outline: none;
+  box-shadow: 0 0 10px rgba(57, 255, 20, 0.4);
+  background: #1a1f3a;
+}
+
+.heir-share {
+  flex: 0.8;
+}
+
+.heir-share input {
+  width: 100%;
+  padding: 10px 12px;
+  background: #0a0e27;
+  border: 1px solid #39FF14;
+  border-radius: 6px;
+  color: #eee;
+  font-size: 13px;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.heir-share input:focus {
+  outline: none;
+  box-shadow: 0 0 10px rgba(57, 255, 20, 0.4);
+  background: #1a1f3a;
+}
+
+.heir-share input::placeholder {
+  text-align: center;
+}
+
+/* ========================================
+   HEIR BUTTONS
+   ======================================== */
 
 .btn-remove {
   background: transparent;
-  border: none;
+  border: 2px solid #ff4c4c;
   color: #ff4c4c;
-  font-size: 20px;
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
   cursor: pointer;
-  line-height: 1;
+  font-weight: 800;
+  font-size: 18px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-.btn-add {
-  background: #232323;
+.btn-remove:hover {
+  background: #ff4c4c;
+  color: white;
+  transform: scale(1.08);
+  box-shadow: 0 0 15px rgba(255, 76, 76, 0.4);
+}
+
+.btn-remove:active {
+  transform: scale(0.95);
+}
+
+.btn-add-heir {
+  width: 100%;
+  padding: 12px;
+  background: transparent;
+  border: 2px solid #39FF14;
   color: #39FF14;
-  border: 1px solid #39FF14;
-  border-radius: 4px;
-  padding: 6px 12px;
+  border-radius: 8px;
   cursor: pointer;
+  font-weight: 700;
   font-size: 14px;
-  transition: background 0.2s;
+  transition: all 0.3s;
+  margin-top: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-.btn-add:hover {
+.btn-add-heir:hover {
   background: #39FF14;
-  color: #121212;
+  color: #0a0e27;
+  box-shadow: 0 0 20px rgba(57, 255, 20, 0.5);
+  transform: translateY(-2px);
 }
+
+.btn-add-heir:active {
+  transform: translateY(0);
+}
+
+/* ========================================
+   MESSAGES
+   ======================================== */
 
 .message {
-  margin: 12px 0;
-  padding: 8px;
-  border-radius: 4px;
+  padding: 16px;
+  border-radius: 10px;
+  margin-bottom: 25px;
   font-size: 14px;
+  font-weight: 600;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  border: 2px solid;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .message.success {
-  background: #163a16;
+  background: linear-gradient(135deg, #163a16 0%, #0a2a0a 100%);
+  border-color: #39FF14;
   color: #39FF14;
-  border: 1px solid #39FF14;
+  text-shadow: 0 0 8px rgba(57, 255, 20, 0.3);
 }
 
 .message.error {
-  background: #3a1616;
-  color: #ff4c4c;
-  border: 1px solid #ff4c4c;
+  background: linear-gradient(135deg, #3a1616 0%, #2a0a0a 100%);
+  border-color: #ff4c4c;
+  color: #ff6b6b;
+  text-shadow: 0 0 8px rgba(255, 76, 76, 0.3);
 }
 
-.btn-submit {
+/* ========================================
+   SUBMIT BUTTON
+   ======================================== */
+
+.btn-deploy {
   width: 100%;
-  background: #39FF14;
-  color: #121212;
+  padding: 15px;
+  background: linear-gradient(135deg, #39FF14 0%, #2eb82e 100%);
+  color: #0a0e27;
   border: none;
-  padding: 12px 0;
+  border-radius: 10px;
   font-size: 16px;
-  border-radius: 4px;
+  font-weight: 800;
   cursor: pointer;
-  transition: background 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(57, 255, 20, 0.3);
+  margin-top: 10px;
 }
 
-.btn-submit:disabled {
-  background: #2a7f2a;
+.btn-deploy:hover:not(:disabled) {
+  background: linear-gradient(135deg, #2eb82e 0%, #27a317 100%);
+  box-shadow: 0 0 30px rgba(57, 255, 20, 0.6);
+  transform: translateY(-3px);
+  letter-spacing: 2px;
+}
+
+.btn-deploy:active:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.btn-deploy:disabled {
+  background: #888;
   cursor: not-allowed;
+  opacity: 0.6;
+  box-shadow: none;
 }
 
-.btn-submit:hover:not(:disabled) {
-  background: #2eb82e;
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 768px) {
+  .contract-form {
+    padding: 25px;
+    border-radius: 12px;
+  }
+
+  .contract-form h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .form-group {
+    margin-bottom: 18px;
+  }
+
+  .heirs-section {
+    padding: 18px;
+    margin-bottom: 20px;
+  }
+
+  .heir-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .heir-input,
+  .heir-share {
+    width: 100%;
+  }
+
+  .btn-remove {
+    width: 100%;
+    height: auto;
+    padding: 8px;
+  }
+
+  .btn-add-heir {
+    padding: 10px;
+    font-size: 13px;
+    margin-top: 10px;
+  }
+
+  .btn-deploy {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .message {
+    padding: 12px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .contract-form {
+    padding: 18px;
+    margin: 10px;
+    border-radius: 10px;
+  }
+
+  .contract-form h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+
+  .form-group label {
+    font-size: 13px;
+  }
+
+  .form-group input {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .heirs-section h3 {
+    font-size: 16px;
+  }
+
+  .heir-input input,
+  .heir-share input {
+    font-size: 12px;
+  }
+
+  .btn-remove {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+
+  .message {
+    padding: 10px;
+    font-size: 12px;
+  }
+}
+
+/* ========================================
+   ANIMATIONS & TRANSITIONS
+   ======================================== */
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.9; }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 15px rgba(57, 255, 20, 0.3); }
+  50% { box-shadow: 0 0 25px rgba(57, 255, 20, 0.6); }
+}
+
+/* Focus states for accessibility */
+.form-group input:focus,
+.btn-deploy:focus,
+.btn-add-heir:focus {
+  outline: 2px solid #39FF14;
+  outline-offset: 2px;
+}
+
+/* ========================================
+   DARK MODE OPTIMIZATION
+   ======================================== */
+
+@media (prefers-color-scheme: dark) {
+  .contract-form {
+    background: linear-gradient(135deg, rgba(26, 31, 58, 0.95) 0%, rgba(10, 14, 39, 0.95) 100%);
+  }
+
+  .heir-row {
+    background: rgba(26, 31, 58, 0.7);
+  }
+}
+
+/* ========================================
+   REDUCE MOTION SUPPORT
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .contract-form,
+  .form-group input,
+  .btn-remove,
+  .btn-add-heir,
+  .btn-deploy,
+  .message {
+    transition: none;
+    animation: none;
+  }
 }
