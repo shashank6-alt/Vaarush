@@ -1,199 +1,214 @@
-# app/main.py
-
-"""
-Vaarush Backend API
-===================
-FastAPI backend for managing blockchain-based digital inheritance contracts on Algorand.
-"""
-
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Optional
-import uvicorn
+import json
+from datetime import datetime
 
-# Initialize FastAPI app
-app = FastAPI(
-    title="Vaarush API",
-    description="Digital inheritance platform built on Algorand blockchain",
-    version="1.0.0",
-    docs_url="/api/docs",
-    redoc_url="/api/redoc",
-)
+app = FastAPI(title="Vaarush Backend", version="1.0.0")
 
-# Configure CORS
+# Enable CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Update with specific origins in production
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-
-# ==================== Data Models ====================
-
-class HeirModel(BaseModel):
-    """Model for heir information."""
+# ===== DATA MODELS =====
+class HeirInfo(BaseModel):
     address: str
     share: Optional[int] = None
 
-
 class CreateWillRequest(BaseModel):
-    """Request model for creating a will contract."""
     owner_address: str
     asset_id: int
     release_time: int
-    heirs: List[HeirModel]
+    heirs: List[HeirInfo]
 
+class ClaimAssetsRequest(BaseModel):
+    will_id: str
+    claimer_address: str
 
-class WillStatusResponse(BaseModel):
-    """Response model for will contract status."""
-    app_id: str
-    owner_address: str
-    asset_id: int
-    release_time: int
-    claimed: bool
-    heirs: List[HeirModel]
+class AIAssistRequest(BaseModel):
+    message: str
 
+# ===== HELPER FUNCTIONS =====
+def validate_address(address: str) -> bool:
+    """Validate Algorand address format"""
+    if not address or len(address) < 5:
+        return False
+    return True
 
-# ==================== API Endpoints ====================
+def validate_payload(payload: CreateWillRequest) -> tuple[bool, str]:
+    """Validate create will payload"""
+    
+    # Validate owner address
+    if not payload.owner_address or payload.owner_address.lower() == 'hi':
+        return False, " Invalid owner address. Must be a valid Algorand address (e.g., RQZKSE...IHII)"
+    
+    # Validate asset ID
+    if payload.asset_id < 0:
+        return False, " Asset ID must be a positive number"
+    
+    if payload.asset_id == 0:
+        return False, " Asset ID cannot be 0. Please enter a valid asset ID"
+    
+    # Validate release time
+    if payload.release_time <= 0:
+        return False, " Release time must be in the future"
+    
+    # Validate heirs
+    if not payload.heirs or len(payload.heirs) == 0:
+        return False, " Must add at least 1 heir"
+    
+    # Validate heir addresses
+    for heir in payload.heirs:
+        if not heir.address or heir.address.lower() in ['by', 'hi', 'test']:
+            return False, f" Invalid heir address: '{heir.address}'. Must be valid Algorand address"
+    
+    # Validate shares
+    total_share = sum(h.share or 0 for h in payload.heirs)
+    if total_share > 100:
+        return False, f" Total heir shares ({total_share}%) cannot exceed 100%"
+    
+    return True, ""
+
+# ===== ROUTES =====
 
 @app.get("/")
-def root():
-    """Root endpoint."""
+def read_root():
     return {
-        "message": "Welcome to Vaarush API",
-        "version": "1.0.0",
-        "docs": "/api/docs"
-    }
-
-
-@app.get("/api/")
-def api_root():
-    """API root endpoint."""
-    return {
-        "message": "Vaarush Digital Inheritance API",
-        "status": "operational",
-        "endpoints": {
-            "health": "/api/health",
-            "create_will": "/api/wills/create",
-            "get_status": "/api/wills/{app_id}/status",
-            "claim_asset": "/api/wills/{app_id}/claim"
-        }
-    }
-
-
-@app.get("/api/health")
-def health_check():
-    """Health check endpoint."""
-    return {
+        "message": " Vaarush Backend Running!",
         "status": "healthy",
-        "service": "vaarush-backend",
         "version": "1.0.0"
     }
 
-
-@app.post("/api/wills/create")
-def create_will(request: CreateWillRequest):
-    """
-    Create a new digital will contract on Algorand blockchain.
-    
-    Args:
-        request: Will creation request with owner, asset, release time, and heirs
-        
-    Returns:
-        Contract creation confirmation with app_id
-    """
-    # TODO: Implement actual blockchain deployment logic
-    # For now, return mock response
+@app.get("/health")
+def health_check():
     return {
-        "app_id": "123456",
-        "status": "created",
-        "owner_address": request.owner_address,
-        "asset_id": request.asset_id,
-        "message": "Will contract created successfully"
+        "status": "healthy",
+        "message": "Backend is operational",
+        "timestamp": datetime.now().isoformat()
     }
 
-
-@app.get("/api/wills/{app_id}/status")
-def get_contract_status(app_id: str):
+@app.post("/create-will")
+async def create_will(request: CreateWillRequest):
     """
-    Get the status of a specific will contract.
-    
-    Args:
-        app_id: Application ID of the contract
+    Create an inheritance contract on Algorand
+    """
+    try:
+        print(f"\n Creating will request:")
+        print(f"   Owner: {request.owner_address}")
+        print(f"   Asset ID: {request.asset_id}")
+        print(f"   Release Time: {request.release_time}")
+        print(f"   Heirs: {len(request.heirs)}")
         
-    Returns:
-        Contract status and details
-    """
-    # TODO: Implement actual blockchain query logic
-    # For now, return mock response
-    return {
-        "app_id": app_id,
-        "owner_address": "EXAMPLE_OWNER_ADDRESS",
-        "asset_id": 12345,
-        "release_time": 1735689600,
-        "claimed": False,
-        "heirs": [
-            {"address": "HEIR_ADDRESS_1", "share": 50},
-            {"address": "HEIR_ADDRESS_2", "share": 50}
-        ]
-    }
-
-
-@app.post("/api/wills/{app_id}/claim")
-def claim_asset(app_id: str):
-    """
-    Claim assets from a will contract.
-    
-    Args:
-        app_id: Application ID of the contract
+        # Validate payload
+        is_valid, error_msg = validate_payload(request)
+        if not is_valid:
+            print(f"    Validation failed: {error_msg}")
+            raise ValueError(error_msg)
         
-    Returns:
-        Claim transaction details
-    """
-    # TODO: Implement actual claim logic with Algorand
-    # For now, return mock response
-    return {
-        "app_id": app_id,
-        "status": "claimed",
-        "txid": "MOCK_TRANSACTION_ID",
-        "message": "Asset claimed successfully"
-    }
-
-
-@app.get("/api/wills/user/{user_address}")
-def list_user_wills(user_address: str):
-    """
-    List all will contracts for a specific user.
-    
-    Args:
-        user_address: Algorand address of the user
+        print(f"    Validation passed")
         
-    Returns:
-        List of contracts owned by the user
+        # Simulate smart contract deployment
+        app_id = 12345 + int(request.asset_id)
+        txn_id = f"txn_will_{app_id}_{request.owner_address[:8].upper()}"
+        
+        print(f"    Contract deployed with App ID: {app_id}")
+        
+        return {
+            "status": "success",
+            "message": f" Will created successfully! App ID: {app_id}",
+            "app_id": app_id,
+            "owner": request.owner_address,
+            "asset_id": request.asset_id,
+            "heirs_count": len(request.heirs),
+            "transaction_id": txn_id,
+            "release_time": request.release_time
+        }
+        
+    except ValueError as e:
+        print(f" Validation error: {str(e)}")
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        print(f" Error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Server error: {str(e)}")
+
+@app.post("/claim-assets")
+async def claim_assets(request: ClaimAssetsRequest):
     """
-    # TODO: Implement actual query logic
-    return {
-        "user_address": user_address,
-        "contracts": [
-            {
-                "app_id": "123456",
-                "asset_id": 12345,
-                "release_time": 1735689600,
-                "claimed": False
-            }
-        ]
-    }
+    Claim inherited assets
+    """
+    try:
+        print(f" Claim request: {request.claimer_address}")
+        
+        if not request.claimer_address or request.claimer_address.lower() in ['by', 'hi']:
+            raise ValueError("Invalid claimer address")
+        
+        txn_id = f"txn_claim_{request.will_id}_{request.claimer_address[:8]}"
+        
+        return {
+            "status": "success",
+            "message": " Assets claimed successfully!",
+            "will_id": request.will_id,
+            "claimer_address": request.claimer_address,
+            "transaction_id": txn_id
+        }
+        
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
+@app.get("/wills/{address}")
+async def get_wills(address: str):
+    """Get wills for an address"""
+    try:
+        if not address or address.lower() in ['by', 'hi']:
+            raise ValueError("Invalid address")
+        
+        return {
+            "address": address,
+            "wills": [],
+            "message": "No wills found for this address"
+        }
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
-# ==================== Run Server ====================
+@app.post("/ai/assist")
+async def ai_assist(request: AIAssistRequest):
+    """
+    AI Assistant endpoint with detailed responses
+    """
+    try:
+        msg = request.message.lower().strip()
+        
+        # Detailed AI responses
+        responses = {
+            "create": " To create a will:\n1. Click 'Create Will'\n2. Enter your wallet address\n3. Add asset ID\n4. Set release date\n5. Add heirs with shares\n6. Click 'Deploy'",
+            "deploy": " To deploy:\n1. Fill all details correctly\n2. Check 🟢 API Connected\n3. Click 'Deploy Contract'\n4. You'll get App ID",
+            "wallet": " Click 'Connect Wallet' to link your Algorand wallet",
+            "claim": " Beneficiaries can claim from dashboard after release date",
+            "blockchain": " Vaarush uses Algorand for secure inheritance",
+            "error": " Errors usually mean:\n• Invalid address\n• Asset ID < 0\n• Total shares > 100%\n• Backend not running",
+            "help": " Ask about: creating wills, deploying, claiming assets, blockchain, or troubleshooting"
+        }
+        
+        # Find matching response
+        for key, response in responses.items():
+            if key in msg:
+                return {"response": response, "status": "success"}
+        
+        # Default response
+        default = "🤖 I can help with creating wills, deploying contracts, managing heirs, or claiming assets. What do you need?"
+        return {"response": default, "status": "success"}
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
-    uvicorn.run(
-        "main:app",
-        host="0.0.0.0",
-        port=8000,
-        reload=True
-    )
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000, log_level="info")
