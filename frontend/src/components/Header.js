@@ -1,47 +1,38 @@
-// src/components/Header.js
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import useAuth from '../hooks/useAuth';
+import { Link } from 'react-router-dom';
+import { FaGithub } from 'react-icons/fa';
 import './Header.css';
 
-const navItems = [
-  { name: 'Home', to: '/' },
-  { name: 'Create Will', to: '/create' },
-  { name: 'Dashboard', to: '/dashboard' },
-];
-
-export default function Header() {
-  const { connectWallet, account } = useAuth();
-  const location = useLocation();
-
+export default function Header({ walletConnected, walletAddress, onConnect }) {
   return (
     <header className="header">
-      <div className="header__content">
-        <div className="logo">
-          <span className="logo--accent">V</span>AARUSH
-        </div>
-        
-        <nav className="nav">
-          {navItems.map((item) => (
-            <Link
-              key={item.to}
-              to={item.to}
-              className={`nav__link ${location.pathname === item.to ? 'nav__link--active' : ''}`}
-            >
-              {item.name}
-            </Link>
-          ))}
+      <div className="header__container">
+        {/* Logo */}
+        <Link to="/" className="header__logo">
+          <span className="logo-text">VAARUSH</span>
+          <span className="logo-tagline">Digital Inheritance Platform</span>
+        </Link>
+
+        {/* Navigation */}
+        <nav className="header__nav">
+          <Link to="/" className="nav-link">Home</Link>
+          <Link to="/create" className="nav-link">Create Will</Link>
+          <Link to="/dashboard" className="nav-link">Dashboard</Link>
         </nav>
 
-        <div className="header__right">
-          {!account ? (
-            <button className="btn-connect" onClick={connectWallet}>
+        {/* Wallet Section */}
+        <div className="header__actions">
+          {walletConnected ? (
+            <div className="wallet-connected">
+              <span className="wallet-indicator"></span>
+              <span className="wallet-address">
+                {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}
+              </span>
+            </div>
+          ) : (
+            <button className="btn-connect" onClick={onConnect}>
               Connect Wallet
             </button>
-          ) : (
-            <div className="wallet-status">
-              {account.slice(0, 6)}...{account.slice(-4)}
-            </div>
           )}
         </div>
       </div>
