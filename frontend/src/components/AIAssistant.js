@@ -4,7 +4,7 @@ import './AIAssistant.css';
 export default function AIAssistant() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { sender: 'ai', text: ' Hi! I\'m your Vaarush AI Assistant. How can I help you today?' }
+    { sender: 'ai', text: 'Hi! I\'m your Vaarush AI Assistant. How can I help you today?' }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -21,60 +21,26 @@ export default function AIAssistant() {
   const getAIResponse = (userMessage) => {
     const msg = userMessage.toLowerCase().trim();
     
-    // Smart responses based on different keywords
     const responses = {
-      // Create/Deploy questions
-      'create': ' To create a will:\n1. Click "Create Will"\n2. Enter your wallet address\n3. Add asset ID and release date\n4. Specify heirs and their shares\n5. Click "Deploy Contract"',
-      'deploy': ' To deploy:\n1. Fill all will details\n2. Make sure backend is running (🟢 API Connected)\n3. Click "Deploy Contract"\n4. You\'ll get an App ID',
-      'asset': ' Asset ID is the Algorand asset you want to inherit. Example: Asset ID 1 for ALGO',
-      'heir': ' Add beneficiaries by entering their wallet addresses and percentage shares',
-      'share': ' Share percentage = how much of the asset each heir gets. Total must be ≤ 100%',
-      
-      // Wallet questions
-      'wallet': ' Click "Connect Wallet" to connect your Algorand wallet (AlgoSigner extension)',
-      'connect': ' Install AlgoSigner browser extension and click "Connect Wallet" button',
-      'address': ' Your wallet address is your unique identifier on Algorand blockchain',
-      
-      // Blockchain questions
+      'create': 'To create a will:\n1. Click "Create Will"\n2. Enter your wallet address\n3. Add asset ID and release date\n4. Specify heirs and their shares\n5. Click "Deploy Contract"',
+      'deploy': 'To deploy:\n1. Fill all will details\n2. Make sure backend is running (API Connected)\n3. Click "Deploy Contract"\n4. You\'ll get an App ID',
+      'asset': 'Asset ID is the Algorand asset you want to inherit. Example: Asset ID 1 for ALGO',
+      'heir': 'Add beneficiaries by entering their wallet addresses and percentage shares',
+      'share': 'Share percentage = how much of the asset each heir gets. Total must be ≤ 100%',
+      'wallet': 'Click "Connect Wallet" to connect your Algorand wallet (AlgoSigner extension)',
       'blockchain': 'Vaarush uses Algorand blockchain for secure, transparent inheritance execution',
-      'algorand': ' Algorand is a fast, secure blockchain perfect for smart contracts and inheritance',
-      'contract': ' Smart contracts are self-executing programs on the blockchain that manage your will',
-      
-      // Claim questions
-      'claim': ' Beneficiaries can claim assets from dashboard once release conditions are met',
-      'release': ' Release date is when beneficiaries can claim their inherited assets',
-      'condition': ' Conditions: asset exists + current time ≥ release date',
-      
-      // Dashboard questions
-      'dashboard': ' Dashboard shows your active wills, heirs, and allows you to claim assets',
-      'view': ' View all your wills and their status in the dashboard',
-      'status': ' Status shows if will is active, completed, or pending',
-      
-      // Error questions
-      'error': ' Common errors:\n• Invalid address format\n• Asset ID < 0\n• Total shares > 100%\n• Backend not running',
-      'failed': ' If "Failed to create will":\n1. Check backend is running\n2. Verify owner address\n3. Check asset ID is valid\n4. Ensure heirs are added\n5. Check 🟢 API Connected indicator',
-      'backend': ' Backend must be running on port 8000. Run: uvicorn app.main:app --reload',
-      
-      // Help questions
-      'help': ' I can help with:\n• Creating wills\n• Deploying contracts\n• Understanding blockchain\n• Claiming assets\n• Troubleshooting errors\n\nWhat do you need?',
-      'how': ' Ask me anything about creating wills, deploying contracts, or managing your digital inheritance!',
-      'what': ' What would you like to know about Vaarush?',
-      
-      // Feature questions
-      'feature': ' Features: Create wills • Deploy contracts • Manage heirs • Claim assets • View dashboard',
-      'security': ' Vaarush uses encrypted blockchain technology - your data is safe!',
-      'cost': ' Algorand transactions have minimal gas fees',
+      'claim': 'Beneficiaries can claim assets from dashboard once release conditions are met',
+      'error': 'Common errors:\n• Invalid address format\n• Asset ID < 0\n• Total shares > 100%\n• Backend not running',
+      'help': 'I can help with:\n• Creating wills\n• Deploying contracts\n• Understanding blockchain\n• Claiming assets\n• Troubleshooting errors\n\nWhat do you need?',
     };
     
-    // Find matching response
     for (const [key, value] of Object.entries(responses)) {
       if (msg.includes(key)) {
         return value;
       }
     }
     
-    // Default response if no match
-    return '🤖 I can help you with:\n• Creating wills\n• Deploying smart contracts\n• Managing beneficiaries\n• Claiming assets\n• Understanding blockchain\n\nWhat would you like to know?';
+    return 'I can help you with creating wills, deploying contracts, managing beneficiaries, or claiming assets. What would you like to know?';
   };
 
   const sendMessage = async () => {
@@ -86,7 +52,6 @@ export default function AIAssistant() {
     setLoading(true);
 
     try {
-      // Try backend first
       const response = await fetch('http://localhost:8000/ai/assist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -104,8 +69,6 @@ export default function AIAssistant() {
         throw new Error('Backend error');
       }
     } catch (error) {
-      // Use local AI if backend fails
-      console.log('Using local AI responses');
       const aiResponse = getAIResponse(userMessage);
       setMessages(prev => [...prev, { 
         sender: 'ai', 
@@ -131,7 +94,12 @@ export default function AIAssistant() {
           onClick={() => setIsOpen(true)}
           title="AI Assistant"
         >
-          🤖
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="currentColor"/>
+            <circle cx="8.5" cy="11" r="1.5" fill="currentColor"/>
+            <circle cx="15.5" cy="11" r="1.5" fill="currentColor"/>
+            <path d="M12 17.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z" fill="currentColor"/>
+          </svg>
         </button>
       )}
 
@@ -139,14 +107,14 @@ export default function AIAssistant() {
         <div className="ai-assistant-container">
           <div className="ai-assistant-header">
             <div className="ai-assistant-title">
-              <span className="ai-icon">🤖</span>
-              <span>Vaarush AI Assistant</span>
+              <span className="ai-icon-header">AI</span>
+              <span>Vaarush Assistant</span>
             </div>
             <button 
               className="ai-assistant-close"
               onClick={() => setIsOpen(false)}
             >
-              ✕
+              ×
             </button>
           </div>
 
@@ -188,7 +156,7 @@ export default function AIAssistant() {
               onClick={sendMessage}
               disabled={loading || !input.trim()}
             >
-              {loading ? 'O' : '➤'}
+              {loading ? '...' : '→'}
             </button>
           </div>
         </div>
