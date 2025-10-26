@@ -1,141 +1,115 @@
-// src/pages/AnalyticsPage.js
-
-import React from 'react';
-import AnalyticsChart from '../components/AnalyticsChart';
+import React, { useState, useEffect } from 'react';
 import './AnalyticsPage.css';
 
-export default function AnalyticsPage() {
-  const barChartData = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-    datasets: [
-      {
-        label: 'Contracts Deployed',
-        data: [5, 8, 12, 10, 15, 18],
-        backgroundColor: 'rgba(57,255,20,0.7)',
-        borderColor: '#39FF14',
-        borderWidth: 2,
-      },
-    ],
-  };
+function AnalyticsPage() {
+  const [transactions, setTransactions] = useState([]);
+  const [stats, setStats] = useState({
+    totalWills: 0,
+    totalAssets: 0,
+    totalHeirs: 0,
+    lastActivity: null
+  });
 
-  const lineChartData = {
-    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-    datasets: [
-      {
-        label: 'Assets Claimed',
-        data: [3, 7, 5, 12],
-        borderColor: '#39FF14',
-        backgroundColor: 'rgba(57,255,20,0.1)',
-        borderWidth: 2,
-        fill: true,
-      },
-    ],
-  };
+  useEffect(() => {
+    loadAnalytics();
+  }, []);
 
-  const pieChartData = {
-    labels: ['Claimed', 'Pending', 'Expired'],
-    datasets: [
-      {
-        label: 'Contract Status',
-        data: [30, 45, 25],
-        backgroundColor: ['#39FF14', '#FF9500', '#FF4C4C'],
-        borderColor: '#121212',
-        borderWidth: 2,
-      },
-    ],
+  const loadAnalytics = () => {
+    // Get data from localStorage
+    const willsData = JSON.parse(localStorage.getItem('vaarush_wills') || '[]');
+    
+    setStats({
+      totalWills: willsData.length,
+      totalAssets: willsData.reduce((acc, w) => acc + (w.asset_id || 0), 0),
+      totalHeirs: willsData.reduce((acc, w) => acc + (w.heirs?.length || 0), 0),
+      lastActivity: willsData.length > 0 ? new Date().toLocaleDateString() : null
+    });
+
+    // Mock transaction history
+    const mockTransactions = willsData.map((will, idx) => ({
+      id: idx + 1,
+      type: 'Contract Deployed',
+      date: new Date(Date.now() - idx * 86400000).toLocaleDateString(),
+      status: 'Success',
+      appId: will.app_id || (12345 + idx)
+    }));
+
+    setTransactions(mockTransactions);
   };
 
   return (
     <div className="analytics-page">
-      <h1>Analytics</h1>
-      <p className="subtitle">
-        Monitor your inheritance platform's performance and insights.
-      </p>
+      <div className="analytics-header">
+        <h1>Analytics & Insights</h1>
+        <p>Track your digital inheritance activity</p>
+      </div>
 
-      <div className="analytics-grid">
-        <div className="analytics-card">
-          <h2>Contracts Deployed Over Time</h2>
-          <AnalyticsChart
-            data={barChartData}
-            options={{ type: 'bar', settings: {} }}
-          />
+      {/* Key Metrics */}
+      <div className="metrics-grid">
+        <div className="metric-card">
+          <div className="metric-icon">📊</div>
+          <div className="metric-content">
+            <h3>Total Wills</h3>
+            <p className="metric-value">{stats.totalWills}</p>
+          </div>
         </div>
 
-        <div className="analytics-card">
-          <h2>Assets Claimed Trend</h2>
-          <AnalyticsChart
-            data={lineChartData}
-            options={{ type: 'line', settings: {} }}
-          />
+        <div className="metric-card">
+          <div className="metric-icon">💎</div>
+          <div className="metric-content">
+            <h3>Total Assets</h3>
+            <p className="metric-value">{stats.totalAssets}</p>
+          </div>
         </div>
 
-        <div className="analytics-card">
-          <h2>Contract Status Distribution</h2>
-          <AnalyticsChart
-            data={pieChartData}
-            options={{ type: 'pie', settings: {} }}
-          />
+        <div className="metric-card">
+          <div className="metric-icon">👥</div>
+          <div className="metric-content">
+            <h3>Total Heirs</h3>
+            <p className="metric-value">{stats.totalHeirs}</p>
+          </div>
+        </div>
+
+        <div className="metric-card">
+          <div className="metric-icon">⚡</div>
+          <div className="metric-content">
+            <h3>Last Activity</h3>
+            <p className="metric-value">{stats.lastActivity || 'N/A'}</p>
+          </div>
         </div>
       </div>
 
-      <section className="metrics-section">
-        <h2>Key Metrics</h2>
-        <div className="metrics-grid">
-          <div className="metric-card">
-            <div className="metric-label">Total Value Locked</div>
-            <div className="metric-value">$2.5M</div>
-            <div className="metric-change positive">+12% this month</div>
+      {/* Transaction History */}
+      <div className="transactions-section">
+        <h2>Transaction History</h2>
+        
+        {transactions.length === 0 ? (
+          <div className="empty-transactions">
+            <p>No transactions yet. Create your first will!</p>
           </div>
-          <div className="metric-card">
-            <div className="metric-label">Avg. Claim Time</div>
-            <div className="metric-value">45 Days</div>
-            <div className="metric-change neutral">Stable</div>
-          </div>
-          <div className="metric-card">
-            <div className="metric-label">Success Rate</div>
-            <div className="metric-value">98.2%</div>
-            <div className="metric-change positive">+2.1% vs last month</div>
-          </div>
-          <div className="metric-card">
-            <div className="metric-label">Active Users</div>
-            <div className="metric-value">1,240</div>
-            <div className="metric-change positive">+18% growth</div>
-          </div>
-        </div>
-      </section>
-
-      <section className="insights-section">
-        <h2>Insights & Recommendations</h2>
-        <div className="insights-list">
-          <div className="insight-item">
-            <span className="insight-icon">📊</span>
-            <div className="insight-content">
-              <p className="insight-title">Peak Activity</p>
-              <p className="insight-desc">
-                Contract deployments peak on Tuesday & Wednesday mornings.
-              </p>
+        ) : (
+          <div className="transactions-table">
+            <div className="table-header">
+              <span>ID</span>
+              <span>Type</span>
+              <span>Date</span>
+              <span>App ID</span>
+              <span>Status</span>
             </div>
+            {transactions.map(tx => (
+              <div key={tx.id} className="table-row">
+                <span>#{tx.id}</span>
+                <span>{tx.type}</span>
+                <span>{tx.date}</span>
+                <span className="app-id">{tx.appId}</span>
+                <span className="status-success">{tx.status}</span>
+              </div>
+            ))}
           </div>
-          <div className="insight-item">
-            <span className="insight-icon">⚡</span>
-            <div className="insight-content">
-              <p className="insight-title">Performance</p>
-              <p className="insight-desc">
-                Average transaction speed: 2.3 seconds (excellent).
-              </p>
-            </div>
-          </div>
-          <div className="insight-item">
-            <span className="insight-icon">🎯</span>
-            <div className="insight-content">
-              <p className="insight-title">User Growth</p>
-              <p className="insight-desc">
-                New users increased 18% month-over-month.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+        )}
+      </div>
     </div>
   );
 }
+
+export default AnalyticsPage;
