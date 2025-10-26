@@ -16,13 +16,13 @@ const DashboardPage = lazy(() => import('./pages/DashboardPage'));
 const DocsPageInline: React.FC = () => (
   <div style={{ padding: '80px 40px', maxWidth: '900px', margin: '0 auto', minHeight: '70vh' }}>
     <h1 style={{ color: '#39FF14', fontSize: '42px', marginBottom: '40px', textAlign: 'center', fontWeight: '800' }}>
-      📚 Vaarush Documentation
+       Vaarush Documentation
     </h1>
     
     <div style={{ color: '#eee', lineHeight: '1.8' }}>
       <section style={{ marginBottom: '40px', background: '#1a1f3a', padding: '30px', borderRadius: '15px', border: '2px solid #39FF14' }}>
         <h2 style={{ color: '#39FF14', fontSize: '28px', marginBottom: '20px', fontWeight: '700' }}>
-          🚀 Getting Started
+           Getting Started
         </h2>
         <ol style={{ marginLeft: '20px', fontSize: '16px', color: '#ddd' }}>
           <li style={{ marginBottom: '15px' }}><strong>Connect Wallet:</strong> Click "Connect Wallet" button in header to connect your Algorand wallet</li>
@@ -35,7 +35,7 @@ const DocsPageInline: React.FC = () => (
 
       <section style={{ marginBottom: '40px', background: '#1a1f3a', padding: '30px', borderRadius: '15px', border: '2px solid #39FF14' }}>
         <h2 style={{ color: '#39FF14', fontSize: '28px', marginBottom: '20px', fontWeight: '700' }}>
-          🔧 Technical Stack
+           Technical Stack
         </h2>
         <ul style={{ marginLeft: '20px', fontSize: '16px', color: '#ddd' }}>
           <li style={{ marginBottom: '10px' }}><strong>Frontend:</strong> React.js with TypeScript</li>
@@ -48,17 +48,17 @@ const DocsPageInline: React.FC = () => (
 
       <section style={{ background: '#1a1f3a', padding: '30px', borderRadius: '15px', border: '2px solid #39FF14' }}>
         <h2 style={{ color: '#39FF14', fontSize: '28px', marginBottom: '20px', fontWeight: '700' }}>
-          🔗 Resources
+           Resources
         </h2>
         <ul style={{ marginLeft: '20px', fontSize: '16px', color: '#ddd' }}>
           <li style={{ marginBottom: '10px' }}>
             <a href="https://github.com/shashank6-alt/Vaarush" target="_blank" rel="noopener noreferrer" style={{ color: '#39FF14', textDecoration: 'none' }}>
-              📁 GitHub Repository
+               GitHub Repository
             </a>
           </li>
           <li style={{ marginBottom: '10px' }}>
             <a href="https://developer.algorand.org/" target="_blank" rel="noopener noreferrer" style={{ color: '#39FF14', textDecoration: 'none' }}>
-              🔷 Algorand Developer Portal
+               Algorand Developer Portal
             </a>
           </li>
         </ul>
@@ -84,7 +84,7 @@ const SupportPageInline: React.FC = () => {
   return (
     <div style={{ padding: '80px 40px', maxWidth: '700px', margin: '0 auto', minHeight: '70vh' }}>
       <h1 style={{ color: '#39FF14', fontSize: '42px', marginBottom: '20px', textAlign: 'center', fontWeight: '800' }}>
-        💬 Support
+         Support
       </h1>
       <p style={{ color: '#ccc', textAlign: 'center', marginBottom: '40px', fontSize: '18px' }}>
         Need help? Send us a message and we'll get back to you soon!
@@ -152,7 +152,7 @@ const SupportPageInline: React.FC = () => {
             onMouseOver={(e) => { e.currentTarget.style.background = '#2eb82e'; e.currentTarget.style.transform = 'scale(1.02)'; }}
             onMouseOut={(e) => { e.currentTarget.style.background = '#39FF14'; e.currentTarget.style.transform = 'scale(1)'; }}
           >
-            📤 Send Message
+             Send Message
           </button>
 
           {submitted && (
@@ -160,7 +160,7 @@ const SupportPageInline: React.FC = () => {
               marginTop: '20px', padding: '15px', background: '#163a16',
               border: '1px solid #39FF14', borderRadius: '8px', color: '#39FF14', textAlign: 'center', fontWeight: '600'
             }}>
-              ✅ Message sent successfully! We'll review it soon.
+               Message sent successfully! We'll review it soon.
             </div>
           )}
         </form>
@@ -168,8 +168,8 @@ const SupportPageInline: React.FC = () => {
 
       <div style={{ marginTop: '60px', textAlign: 'center', color: '#ccc' }}>
         <h3 style={{ color: '#39FF14', marginBottom: '20px', fontSize: '20px' }}>Other Ways to Reach Us</h3>
-        <p style={{ marginBottom: '10px' }}>📧 <a href="mailto:shashankdumpala6@gmail.com" style={{ color: '#39FF14', textDecoration: 'none' }}>shashankdumpala6@gmail.com</a></p>
-        <p>🐙 <a href="https://github.com/shashank6-alt/Vaarush" target="_blank" rel="noopener noreferrer" style={{ color: '#39FF14', textDecoration: 'none' }}>github.com/shashank6-alt/Vaarush</a></p>
+        <p style={{ marginBottom: '10px' }}> <a href="mailto:shashankdumpala6@gmail.com" style={{ color: '#39FF14', textDecoration: 'none' }}>shashankdumpala6@gmail.com</a></p>
+        <p> <a href="https://github.com/shashank6-alt/Vaarush" target="_blank" rel="noopener noreferrer" style={{ color: '#39FF14', textDecoration: 'none' }}>github.com/shashank6-alt/Vaarush</a></p>
       </div>
     </div>
   );
@@ -302,7 +302,7 @@ const ErrorFallback: React.FC<ErrorFallbackProps> = ({ error, resetError }) => {
         <div style={{
           fontSize: '72px',
           marginBottom: '20px'
-        }}>⚠️</div>
+        }}> </div>
         
         <h1 style={{
           fontSize: '36px',
@@ -363,7 +363,7 @@ const ErrorFallback: React.FC<ErrorFallbackProps> = ({ error, resetError }) => {
               letterSpacing: '1px'
             }}
           >
-            🏠 Go Home
+             Go Home
           </button>
         </div>
       </div>
@@ -461,13 +461,13 @@ const App: React.FC = () => {
   // Initialize app
   useEffect(() => {
     const initializeApp = async () => {
-      console.log('🚀 Initializing Vaarush App...');
+      console.log(' Initializing Vaarush App...');
       
       try {
         // Check for saved wallet
         const savedAddress = localStorage.getItem('vaarush_wallet');
         if (savedAddress) {
-          console.log('💾 Found saved wallet:', savedAddress.slice(0, 10) + '...');
+          console.log(' Found saved wallet:', savedAddress.slice(0, 10) + '...');
           setState(prev => ({
             ...prev,
             walletConnected: true,
@@ -482,21 +482,21 @@ const App: React.FC = () => {
           } as any);
           
           if (response?.ok) {
-            console.log('✅ Backend connected successfully');
+            console.log(' Backend connected successfully');
             setState(prev => ({ ...prev, backendConnected: true }));
           }
         } catch (backendError) {
-          console.warn('⚠️ Backend not available, running in demo mode');
+          console.warn(' Backend not available, running in demo mode');
           setState(prev => ({ ...prev, backendConnected: false }));
         }
 
         // Simulate loading time for better UX
         await new Promise(resolve => setTimeout(resolve, 1500));
         
-        console.log('✅ App initialization complete');
+        console.log(' App initialization complete');
         
       } catch (error) {
-        console.error('❌ App initialization failed:', error);
+        console.error(' App initialization failed:', error);
         setState(prev => ({ 
           ...prev, 
           error: `Failed to initialize app: ${error instanceof Error ? error.message : 'Unknown error'}` 
@@ -524,13 +524,13 @@ const App: React.FC = () => {
         walletAddress: demoAddress
       }));
       localStorage.setItem('vaarush_wallet', demoAddress);
-      console.log('✅ Demo wallet connected');
+      console.log(' Demo wallet connected');
       
-      alert('🎉 Wallet Connected Successfully! (Demo Mode)');
+      alert(' Wallet Connected Successfully! (Demo Mode)');
       
     } catch (error) {
-      console.error('❌ Wallet connection failed:', error);
-      alert('❌ Failed to connect wallet. Please try again.');
+      console.error(' Wallet connection failed:', error);
+      alert(' Failed to connect wallet. Please try again.');
     }
   };
 
@@ -556,7 +556,7 @@ const App: React.FC = () => {
       }}>
         <LoadingSpinner 
           size="large" 
-          text="🔐 Loading Vaarush Platform..." 
+          text=" Loading Vaarush Platform..." 
         />
       </div>
     );
@@ -581,7 +581,7 @@ const App: React.FC = () => {
               fontWeight: '600',
               zIndex: 10000
             }}>
-              <span>⚠️ {state.error}</span>
+              <span> {state.error}</span>
               <button 
                 onClick={clearError}
                 style={{
