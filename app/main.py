@@ -189,7 +189,7 @@ async def ai_assist(request: AIAssistRequest):
         # Detailed AI responses
         responses = {
             "create": " To create a will:\n1. Click 'Create Will'\n2. Enter your wallet address\n3. Add asset ID\n4. Set release date\n5. Add heirs with shares\n6. Click 'Deploy'",
-            "deploy": " To deploy:\n1. Fill all details correctly\n2. Check 🟢 API Connected\n3. Click 'Deploy Contract'\n4. You'll get App ID",
+            "deploy": " To deploy:\n1. Fill all details correctly\n2. Check  API Connected\n3. Click 'Deploy Contract'\n4. You'll get App ID",
             "wallet": " Click 'Connect Wallet' to link your Algorand wallet",
             "claim": " Beneficiaries can claim from dashboard after release date",
             "blockchain": " Vaarush uses Algorand for secure inheritance",
@@ -203,7 +203,7 @@ async def ai_assist(request: AIAssistRequest):
                 return {"response": response, "status": "success"}
         
         # Default response
-        default = "🤖 I can help with creating wills, deploying contracts, managing heirs, or claiming assets. What do you need?"
+        default = " I can help with creating wills, deploying contracts, managing heirs, or claiming assets. What do you need?"
         return {"response": default, "status": "success"}
         
     except Exception as e:
