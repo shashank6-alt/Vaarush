@@ -1,0 +1,43 @@
+#pragma version 8
+txn ApplicationID
+int 0
+==
+bnz main_l4
+txna ApplicationArgs 0
+byte "claim"
+==
+bnz main_l3
+err
+main_l3:
+global LatestTimestamp
+byte "release_time"
+app_global_get
+>=
+byte "is_claimed"
+app_global_get
+int 0
+==
+&&
+assert
+byte "is_claimed"
+int 1
+app_global_put
+int 1
+return
+main_l4:
+byte "owner"
+txn Sender
+app_global_put
+byte "asset_id"
+txna ApplicationArgs 1
+btoi
+app_global_put
+byte "release_time"
+txna ApplicationArgs 2
+btoi
+app_global_put
+byte "is_claimed"
+int 0
+app_global_put
+int 1
+return
