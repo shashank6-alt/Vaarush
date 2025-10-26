@@ -4,13 +4,13 @@ export default function DocsPage() {
   return (
     <div style={{ padding: '80px 40px', maxWidth: '900px', margin: '0 auto' }}>
       <h1 style={{ color: '#39FF14', fontSize: '42px', marginBottom: '40px' }}>
-        📚 Vaarush Documentation
+         Vaarush Documentation
       </h1>
       
       <div style={{ color: '#eee', lineHeight: '1.8' }}>
         <section style={{ marginBottom: '40px' }}>
           <h2 style={{ color: '#39FF14', fontSize: '28px', marginBottom: '20px' }}>
-            🚀 Getting Started
+             Getting Started
           </h2>
           <p>Vaarush is a blockchain-based digital inheritance platform built on Algorand. Follow these steps to create your first will:</p>
           <ol>
@@ -23,7 +23,7 @@ export default function DocsPage() {
 
         <section style={{ marginBottom: '40px' }}>
           <h2 style={{ color: '#39FF14', fontSize: '28px', marginBottom: '20px' }}>
-            🔧 Technical Architecture
+             Technical Architecture
           </h2>
           <ul>
             <li><strong>Frontend:</strong> React.js with TypeScript</li>
@@ -35,7 +35,7 @@ export default function DocsPage() {
 
         <section style={{ marginBottom: '40px' }}>
           <h2 style={{ color: '#39FF14', fontSize: '28px', marginBottom: '20px' }}>
-            📖 API Documentation
+             API Documentation
           </h2>
           <p>Backend API endpoints:</p>
           <ul>
@@ -48,7 +48,7 @@ export default function DocsPage() {
 
         <section>
           <h2 style={{ color: '#39FF14', fontSize: '28px', marginBottom: '20px' }}>
-            🔗 Useful Links
+             Useful Links
           </h2>
           <ul>
             <li><a href="https://github.com/shashank6-alt/Vaarush" target="_blank" rel="noopener noreferrer" style={{ color: '#39FF14' }}>GitHub Repository</a></li>
