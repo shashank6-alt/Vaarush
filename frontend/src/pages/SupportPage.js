@@ -24,7 +24,7 @@ export default function SupportPage() {
   return (
     <div style={{ padding: '80px 40px', maxWidth: '700px', margin: '0 auto' }}>
       <h1 style={{ color: '#39FF14', fontSize: '42px', marginBottom: '20px', textAlign: 'center' }}>
-        💬 Support
+         Support
       </h1>
       <p style={{ color: '#ccc', textAlign: 'center', marginBottom: '40px', fontSize: '18px' }}>
         Need help? Contact us and we'll get back to you soon!
@@ -149,7 +149,7 @@ export default function SupportPage() {
               color: '#39FF14',
               textAlign: 'center'
             }}>
-              ✅ Message sent successfully! We'll get back to you soon.
+               Message sent successfully! We'll get back to you soon.
             </div>
           )}
         </form>
@@ -157,8 +157,8 @@ export default function SupportPage() {
 
       <div style={{ marginTop: '60px', textAlign: 'center', color: '#ccc' }}>
         <h3 style={{ color: '#39FF14', marginBottom: '20px' }}>Other Ways to Reach Us</h3>
-        <p>📧 Email: <a href="mailto:shashankdumpala6@gmail.com" style={{ color: '#39FF14' }}>shashankdumpala6@gmail.com</a></p>
-        <p>🐙 GitHub: <a href="https://github.com/shashank6-alt/Vaarush" target="_blank" rel="noopener noreferrer" style={{ color: '#39FF14' }}>github.com/shashank6-alt/Vaarush</a></p>
+        <p> Email: <a href="mailto:shashankdumpala6@gmail.com" style={{ color: '#39FF14' }}>shashankdumpala6@gmail.com</a></p>
+        <p> GitHub: <a href="https://github.com/shashank6-alt/Vaarush" target="_blank" rel="noopener noreferrer" style={{ color: '#39FF14' }}>github.com/shashank6-alt/Vaarush</a></p>
       </div>
     </div>
   );
