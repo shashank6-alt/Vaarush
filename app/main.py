@@ -56,7 +56,7 @@ def validate_payload(payload: CreateWillRequest) -> tuple[bool, str]:
         return False, " Asset ID cannot be 0. Please enter a valid asset ID"
     
     # Validate release time
-    if payload.release_time <= 0:
+    if payload.release_time <= datetime.utcnow().timestamp():
         return False, " Release time must be in the future"
     
     # Validate heirs
